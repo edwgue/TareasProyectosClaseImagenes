@@ -1,4 +1,9 @@
 from math import *
+import random
 
-list = range (0,10)
-list
+n = 100
+lista = [random.randint(1,50) for _ in range(n)]
+print (lista)
+
+
+
