@@ -53,7 +53,6 @@ class thetaFilter:
         angle_mask[idx_angle] = 1
         angle_mask[int(half_size), int(half_size)] = 1
 
-
          # filtering via FFT
         mask = angle_mask   # can also use high or band pass mask
         fft_filtered = image_gray_fft_shift * mask
@@ -61,12 +60,6 @@ class thetaFilter:
         image_filtered = np.absolute(image_filtered)
         image_filtered /= np.max(image_filtered)
         return image_filtered, mask
-        # cv2.imshow("Original image", image)
-        # cv2.imshow("Filter frequency response", 255 * mask)
-        # cv2.imshow("Filtered image", image_filtered)
-        # cv2.waitKey(0)
-
-
 
 if __name__ == '__main__':
     path = sys.argv[1]

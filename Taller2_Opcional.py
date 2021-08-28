@@ -53,18 +53,15 @@ class thetaFilter:
         angle_mask[idx_angle] = 1
         angle_mask[int(half_size), int(half_size)] = 1
 
-
          # filtering via FFT
-        mask = angle_mask   # can also use high or band pass mask
+
+        mask = angle_mask
         fft_filtered = image_gray_fft_shift * mask
         image_filtered = np.fft.ifft2(np.fft.fftshift(fft_filtered))
         image_filtered = np.absolute(image_filtered)
         image_filtered /= np.max(image_filtered)
+
         return image_filtered, mask
-        # cv2.imshow("Original image", image)
-        # cv2.imshow("Filter frequency response", 255 * mask)
-        # cv2.imshow("Filtered image", image_filtered)
-        # cv2.waitKey(0)
 
 
 
@@ -78,26 +75,14 @@ if __name__ == '__main__':
     angtheta = int(input("digite el ángulo theta "))
     angdeltatheta = int(input("digite el ángulo theta "))
 
-    image_filtered, mask = objetothetafilter.filtering(image_gray, angtheta, angdeltatheta)
+    image_filtered_1, mask_1 = objetothetafilter.filtering(image_gray, angtheta, angdeltatheta)
+    image_filtered_2, mask_2 = objetothetafilter.filtering(image_gray, 80, 20)
+    image_filtered_3, mask_3 = objetothetafilter.filtering(image_gray, 140, 20)
+
 
     cv2.imshow("Original image", image)
-    cv2.imshow("Filter frequency response", 255 * mask)
-    cv2.imshow("Filtered image", image_filtered)
-
-    # Punto dos
-    image_filtered_1, s = objetothetafilter.filtering(image_gray, 0, 20)
-    cv2.imshow("Filtered image Puntos 2, 0 ", image_filtered_1)
-
-    image_filtered_2, t = objetothetafilter.filtering(image_gray, 45, 15)
-    cv2.imshow("Filtered image Puntos 2, 45 ", image_filtered_2)
-
-    image_filtered_3, w = objetothetafilter.filtering(image_gray, 90, 10)
-    cv2.imshow("Filtered image Puntos 2, 90 ", image_filtered_3)
-
-    image_filtered_4, r = objetothetafilter.filtering(image_gray, 135, 20)
-    cv2.imshow("Filtered image Puntos 2, 135 ", image_filtered_4)
-
-    imagenresumida = objetothetafilter.uniongraficas(image_filtered_1, image_filtered_2, image_filtered_3, image_filtered_4)
-    cv2.imshow("Filtered image Final", imagenresumida)
+    cv2.imshow("Filter frequency response", 255 * mask_2)
+    cv2.imshow("Filtered image", image_filtered_2)
     cv2.waitKey(0)
+
 
