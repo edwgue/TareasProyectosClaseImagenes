@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
     # Punto dos
     image_filtered_1, s = objetothetafilter.filtering(image_gray, 0, 20)
-    cv2.imshow("Filtered image Puntos 2, 20 ", image_filtered_1)
+    cv2.imshow("Filtered image Puntos 2, 0 ", image_filtered_1)
 
     image_filtered_2, t = objetothetafilter.filtering(image_gray, 45, 15)
     cv2.imshow("Filtered image Puntos 2, 45 ", image_filtered_2)
