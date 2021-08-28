@@ -13,11 +13,12 @@ class thetaFilter:
         self.theta = 1
         self.deltatheta = 1
 
-    def set_theta(self, theta, deltatheta):
-        self.theta = theta
-        self.deltatheta = deltatheta
+    def uniongraficas(self, imagefiltered1, imagefiltered2, imagefiltered3, imagefiltered4):
+           sintesis = (imagefiltered1 + imagefiltered2 + imagefiltered3 + imagefiltered4)/4
+           return sintesis
 
-    def filtering(imagen, imagegr, ang1, deltaang1):
+
+    def filtering(self, imagegr, ang1, deltaang1):
         theta = ang1
         delta_theta = deltaang1
 
@@ -50,6 +51,8 @@ class thetaFilter:
         idx_angle = np.bitwise_or(idx_angle_1, idx_angle_2)
 
         angle_mask[idx_angle] = 1
+        angle_mask[int(half_size), int(half_size)] = 1
+
 
          # filtering via FFT
         mask = angle_mask   # can also use high or band pass mask
@@ -57,11 +60,12 @@ class thetaFilter:
         image_filtered = np.fft.ifft2(np.fft.fftshift(fft_filtered))
         image_filtered = np.absolute(image_filtered)
         image_filtered /= np.max(image_filtered)
+        return image_filtered, mask
+        # cv2.imshow("Original image", image)
+        # cv2.imshow("Filter frequency response", 255 * mask)
+        # cv2.imshow("Filtered image", image_filtered)
+        # cv2.waitKey(0)
 
-        cv2.imshow("Original image", image)
-        cv2.imshow("Filter frequency response", 255 * mask)
-        cv2.imshow("Filtered image", image_filtered)
-        cv2.waitKey(0)
 
 
 if __name__ == '__main__':
@@ -73,9 +77,27 @@ if __name__ == '__main__':
     objetothetafilter = thetaFilter(image_gray)
     angtheta = int(input("digite el ángulo theta "))
     angdeltatheta = int(input("digite el ángulo theta "))
-    objetothetafilter.filtering(image_gray, angtheta, angdeltatheta)
-    objetothetafilter.set_theta(45, 5)
 
+    image_filtered, mask = objetothetafilter.filtering(image_gray, angtheta, angdeltatheta)
 
-    cv2.imshow("image", image_gray)
+    cv2.imshow("Original image", image)
+    cv2.imshow("Filter frequency response", 255 * mask)
+    cv2.imshow("Filtered image", image_filtered)
+
+    # Punto dos
+    image_filtered_1, s = objetothetafilter.filtering(image_gray, 0, 20)
+    cv2.imshow("Filtered image Puntos 2, 20 ", image_filtered_1)
+
+    image_filtered_2, t = objetothetafilter.filtering(image_gray, 45, 15)
+    cv2.imshow("Filtered image Puntos 2, 45 ", image_filtered_2)
+
+    image_filtered_3, w = objetothetafilter.filtering(image_gray, 90, 10)
+    cv2.imshow("Filtered image Puntos 2, 90 ", image_filtered_3)
+
+    image_filtered_4, r = objetothetafilter.filtering(image_gray, 135, 20)
+    cv2.imshow("Filtered image Puntos 2, 135 ", image_filtered_4)
+
+    imagenresumida = objetothetafilter.uniongraficas(image_filtered_1, image_filtered_2, image_filtered_3, image_filtered_4)
+    cv2.imshow("Filtered image Final", imagenresumida)
     cv2.waitKey(0)
+
