@@ -79,10 +79,17 @@ if __name__ == '__main__':
     image_filtered_2, mask_2 = objetothetafilter.filtering(image_gray, 80, 20)
     image_filtered_3, mask_3 = objetothetafilter.filtering(image_gray, 140, 20)
 
+    N = 11
+    image_filtered_1_M1 = cv2.blur(image_filtered_1, (N,N))
+    image_filtered_1_M2 = cv2.blur(np.power(image_filtered_1, 2), (N,N))
+    image_filtered_1_STD = np.sqrt(image_filtered_1_M2 - np.power(image_filtered_1_M1,2))
+    image_filtered_1_STD /= np.max(image_filtered_1_STD)
+    mask_filtered_1_M1_STD = image_filtered_1_STD > 0.5
+
 
     cv2.imshow("Original image", image)
-    cv2.imshow("Filter frequency response", 255 * mask_2)
-    cv2.imshow("Filtered image", image_filtered_2)
+    cv2.imshow("Filter frequency response", 255 * mask_1)
+    cv2.imshow("Filtered image", image_filtered_1)
+    cv2.imshow("STD image", 255*(mask_filtered_1_M1_STD.astype(np.uint8)))
     cv2.waitKey(0)
-
 
