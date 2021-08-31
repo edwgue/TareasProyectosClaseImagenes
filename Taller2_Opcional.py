@@ -13,11 +13,6 @@ class thetaFilter:
         self.theta = 1
         self.deltatheta = 1
 
-    def uniongraficas(self, imagefiltered1, imagefiltered2, imagefiltered3, imagefiltered4):
-           sintesis = (imagefiltered1 + imagefiltered2 + imagefiltered3 + imagefiltered4)/4
-           return sintesis
-
-
     def filtering(self, imagegr, ang1, deltaang1):
         theta = ang1
         delta_theta = deltaang1
@@ -63,33 +58,66 @@ class thetaFilter:
 
         return image_filtered, mask
 
+    def STDN (self, N, umbral, image):
+
+        Tam_ventana = N
+        image_filtered_1 = image
+        umbral1 = umbral
+        image_filtered_1_M1 = cv2.blur(image_filtered_1, (Tam_ventana, Tam_ventana))
+        image_filtered_1_M2 = cv2.blur(np.power(image_filtered_1, 2), (Tam_ventana, Tam_ventana))
+        image_filtered_1_STD = np.sqrt(image_filtered_1_M2 - np.power(image_filtered_1_M1, 2))
+        image_filtered_1_STD /= np.max(image_filtered_1_STD)
+        mask_filtered_1_M1_STD = image_filtered_1_STD > umbral1
+
+        return mask_filtered_1_M1_STD
 
 
 if __name__ == '__main__':
+
     path = sys.argv[1]
     image_name = sys.argv[2]
     path_file = os.path.join(path, image_name)
     image = cv2.imread(path_file)
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     objetothetafilter = thetaFilter(image_gray)
-    angtheta = int(input("digite el ángulo theta "))
-    angdeltatheta = int(input("digite el ángulo theta "))
+    angtheta = int(input("digite el ángulo theta menor a 40:  "))
+    angdeltatheta = int(input("digite el ángulo deltatheta menor a 20:  "))
 
     image_filtered_1, mask_1 = objetothetafilter.filtering(image_gray, angtheta, angdeltatheta)
     image_filtered_2, mask_2 = objetothetafilter.filtering(image_gray, 80, 20)
-    image_filtered_3, mask_3 = objetothetafilter.filtering(image_gray, 140, 20)
+    image_filtered_3, mask_3 = objetothetafilter.filtering(image_gray, 108, 20)
+    image_filtered_4, mask_4 = objetothetafilter.filtering(image_gray, 144, 20)
+    image_filtered_5, mask_5 = objetothetafilter.filtering(image_gray, 182, 20)
+    image_filtered_6, mask_6 = objetothetafilter.filtering(image_gray, 220, 20)
+    image_filtered_7, mask_7 = objetothetafilter.filtering(image_gray, 256, 20)
+    image_filtered_8, mask_8 = objetothetafilter.filtering(image_gray, 292, 20)
+    image_filtered_9, mask_9 = objetothetafilter.filtering(image_gray, 320, 20)
+    image_filtered_10, mask_10 = objetothetafilter.filtering(image_gray, 355, 20)
 
     N = 11
-    image_filtered_1_M1 = cv2.blur(image_filtered_1, (N,N))
-    image_filtered_1_M2 = cv2.blur(np.power(image_filtered_1, 2), (N,N))
-    image_filtered_1_STD = np.sqrt(image_filtered_1_M2 - np.power(image_filtered_1_M1,2))
-    image_filtered_1_STD /= np.max(image_filtered_1_STD)
-    mask_filtered_1_M1_STD = image_filtered_1_STD > 0.5
+    umbral = 0.5
+    Mask_image_filtered_1_STD = objetothetafilter.STDN(N, umbral, image_filtered_1)
+    Mask_image_filtered_2_STD = objetothetafilter.STDN(N, umbral, image_filtered_2)
+    Mask_image_filtered_3_STD = objetothetafilter.STDN(N, umbral, image_filtered_3)
+    Mask_image_filtered_4_STD = objetothetafilter.STDN(N, umbral, image_filtered_4)
+    Mask_image_filtered_5_STD = objetothetafilter.STDN(N, umbral, image_filtered_5)
+    Mask_image_filtered_6_STD = objetothetafilter.STDN(N, umbral, image_filtered_6)
+    Mask_image_filtered_7_STD = objetothetafilter.STDN(N, umbral, image_filtered_7)
+    Mask_image_filtered_8_STD = objetothetafilter.STDN(N, umbral, image_filtered_8)
+    Mask_image_filtered_9_STD = objetothetafilter.STDN(N, umbral, image_filtered_9)
+    Mask_image_filtered_10_STD = objetothetafilter.STDN(N, umbral, image_filtered_10)
+
+
+    rebuilding_image = (image_filtered_1 * mask_1.astype(np.float64)) + (image_filtered_2 * mask_2.astype(np.float64)) + (image_filtered_3 * mask_3.astype(np.float64)) + (image_filtered_4 *
+                        mask_4.astype(np.float64)) + (image_filtered_5 * mask_5.astype(np.float64)) + (image_filtered_6 * mask_6.astype(np.float64)) + (image_filtered_7 * mask_7.astype(np.float64)) + (image_filtered_8
+                        * mask_8.astype(np.float64)) + (image_filtered_9 * mask_9.astype(np.float64)) + (image_filtered_10 * mask_10.astype(np.float64))
+
 
 
     cv2.imshow("Original image", image)
-    cv2.imshow("Filter frequency response", 255 * mask_1)
-    cv2.imshow("Filtered image", image_filtered_1)
-    cv2.imshow("STD image", 255*(mask_filtered_1_M1_STD.astype(np.uint8)))
+    cv2.imshow("Filter frequency response", 255 * mask_2)
+    cv2.imshow("Filtered image", image_filtered_2)
+    cv2.imshow("STD image", 255*(Mask_image_filtered_2_STD.astype(np.uint8)))
+    cv2.imshow("Rebuilding image", rebuilding_image)
     cv2.waitKey(0)
 
