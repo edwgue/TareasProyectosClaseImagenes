@@ -89,12 +89,12 @@ if __name__ == '__main__':
     image_filtered_4, mask_4 = objetothetafilter.filtering(image_gray, 110, 20)
     image_filtered_5, mask_5 = objetothetafilter.filtering(image_gray, 140, 20)
     image_filtered_6, mask_6 = objetothetafilter.filtering(image_gray, 170, 20)
-    # image_filtered_7, mask_7 = objetothetafilter.filtering(image_gray, 320, 20)
-    # image_filtered_8, mask_8 = objetothetafilter.filtering(image_gray, 340, 20)
+    # image_filtered_7, mask_7 = objetothetafilter.filtering(image_gray, 170, 20)
+    # image_filtered_8, mask_8 = objetothetafilter.filtering(image_gray, 180, 20)
     # image_filtered_9, mask_9 = objetothetafilter.filtering(image_gray, 355, 20)
     # image_filtered_10, mask_10 = objetothetafilter.filtering(image_gray, 0, 20)
 
-    N = 21
+    N = 40
     umbral = 0.5
     Mask_image_filtered_1_STD = objetothetafilter.STDN(N, umbral, image_filtered_1)
     Mask_image_filtered_2_STD = objetothetafilter.STDN(N, umbral, image_filtered_2)
@@ -110,14 +110,14 @@ if __name__ == '__main__':
 
     rebuilding_image = (image_filtered_1 * mask_1.astype(np.float64)) + (image_filtered_2 * mask_2.astype(
     np.float64)) + (image_filtered_3 * mask_3.astype(np.float64)) + (image_filtered_4 * mask_4.astype(
-    np.float64)) + (image_filtered_5 * mask_5.astype(np.float64)) + (image_filtered_6 * mask_6.astype(np.float64))
+    np.float64)) + (image_filtered_5 * mask_5.astype(np.float64)) + (image_filtered_6 * mask_6.astype(
+    np.float64)) #+ (image_filtered_7 * mask_7.astype(np.float64)) + (image_filtered_8 * mask_8.astype(np.float64))
+    #+ (image_filtered_9
+    # * mask_9.astype(np.float64)) + (image_filtered_10 * mask_10.astype(np.float64))
 
-                       # + (image_filtered_7 * mask_7.astype(np.float64)) + (image_filtered_8
-                       #  * mask_8.astype(np.float64)) + (image_filtered_9 * mask_9.astype(np.float64)) + (image_filtered_10 * mask_10.astype(np.float64))
-
-    mask_fin = mask_1.astype(np.float64) + mask_2.astype(np.float64) + mask_3.astype(np.float64) + mask_4.astype(
-    np.float64) + mask_5.astype(np.float64) + mask_6.astype(np.float64)
-               #+ mask_7.astype(np.float64) + mask_8.astype(np.float64) + mask_9 .astype(np.float64)+ mask_10.astype(np.float64)
+    mask_fin = mask_1.astype(np.float64) + mask_2.astype(np.float64) + mask_3.astype(np.float64) + mask_4.astype(np.float64) + mask_5.astype(np.float64) + mask_6.astype(np.float64)
+               #+ mask_7.astype(np.float64) + mask_8.astype(np.float64)
+    #+ mask_9 .astype(np.float64)+ mask_10.astype(np.float64)
 
 
     cv2.imshow("Original image", image)
@@ -126,6 +126,6 @@ if __name__ == '__main__':
     cv2.imshow("STD image", 255*(Mask_image_filtered_6_STD.astype(np.uint8)))
     cv2.imshow("Rebuilding image", rebuilding_image)
     #cv2.imshow("mask fin", 255 * (mask_fin.astype(np.uint8)))
-    cv2.imshow("mask fin", mask_fin/5)
+    cv2.imshow("mask fin", mask_fin/8)
     cv2.waitKey(0)
 
