@@ -84,17 +84,17 @@ if __name__ == '__main__':
     angdeltatheta = int(input("digite el ángulo deltatheta menor a 20:  "))
 
     image_filtered_1, mask_1 = objetothetafilter.filtering(image_gray, angtheta, angdeltatheta)
-    image_filtered_2, mask_2 = objetothetafilter.filtering(image_gray, 80, 20)
-    image_filtered_3, mask_3 = objetothetafilter.filtering(image_gray, 108, 20)
-    image_filtered_4, mask_4 = objetothetafilter.filtering(image_gray, 144, 20)
-    image_filtered_5, mask_5 = objetothetafilter.filtering(image_gray, 182, 20)
-    image_filtered_6, mask_6 = objetothetafilter.filtering(image_gray, 220, 20)
-    image_filtered_7, mask_7 = objetothetafilter.filtering(image_gray, 256, 20)
-    image_filtered_8, mask_8 = objetothetafilter.filtering(image_gray, 292, 20)
-    image_filtered_9, mask_9 = objetothetafilter.filtering(image_gray, 320, 20)
-    image_filtered_10, mask_10 = objetothetafilter.filtering(image_gray, 355, 20)
+    image_filtered_2, mask_2 = objetothetafilter.filtering(image_gray, 50, 20)
+    image_filtered_3, mask_3 = objetothetafilter.filtering(image_gray, 80, 20)
+    image_filtered_4, mask_4 = objetothetafilter.filtering(image_gray, 110, 20)
+    image_filtered_5, mask_5 = objetothetafilter.filtering(image_gray, 140, 20)
+    image_filtered_6, mask_6 = objetothetafilter.filtering(image_gray, 170, 20)
+    # image_filtered_7, mask_7 = objetothetafilter.filtering(image_gray, 320, 20)
+    # image_filtered_8, mask_8 = objetothetafilter.filtering(image_gray, 340, 20)
+    # image_filtered_9, mask_9 = objetothetafilter.filtering(image_gray, 355, 20)
+    # image_filtered_10, mask_10 = objetothetafilter.filtering(image_gray, 0, 20)
 
-    N = 11
+    N = 21
     umbral = 0.5
     Mask_image_filtered_1_STD = objetothetafilter.STDN(N, umbral, image_filtered_1)
     Mask_image_filtered_2_STD = objetothetafilter.STDN(N, umbral, image_filtered_2)
@@ -102,22 +102,30 @@ if __name__ == '__main__':
     Mask_image_filtered_4_STD = objetothetafilter.STDN(N, umbral, image_filtered_4)
     Mask_image_filtered_5_STD = objetothetafilter.STDN(N, umbral, image_filtered_5)
     Mask_image_filtered_6_STD = objetothetafilter.STDN(N, umbral, image_filtered_6)
-    Mask_image_filtered_7_STD = objetothetafilter.STDN(N, umbral, image_filtered_7)
-    Mask_image_filtered_8_STD = objetothetafilter.STDN(N, umbral, image_filtered_8)
-    Mask_image_filtered_9_STD = objetothetafilter.STDN(N, umbral, image_filtered_9)
-    Mask_image_filtered_10_STD = objetothetafilter.STDN(N, umbral, image_filtered_10)
+    # Mask_image_filtered_7_STD = objetothetafilter.STDN(N, umbral, image_filtered_7)
+    # Mask_image_filtered_8_STD = objetothetafilter.STDN(N, umbral, image_filtered_8)
+    # Mask_image_filtered_9_STD = objetothetafilter.STDN(N, umbral, image_filtered_9)
+    # Mask_image_filtered_10_STD = objetothetafilter.STDN(N, umbral, image_filtered_10)
 
 
-    rebuilding_image = (image_filtered_1 * mask_1.astype(np.float64)) + (image_filtered_2 * mask_2.astype(np.float64)) + (image_filtered_3 * mask_3.astype(np.float64)) + (image_filtered_4 *
-                        mask_4.astype(np.float64)) + (image_filtered_5 * mask_5.astype(np.float64)) + (image_filtered_6 * mask_6.astype(np.float64)) + (image_filtered_7 * mask_7.astype(np.float64)) + (image_filtered_8
-                        * mask_8.astype(np.float64)) + (image_filtered_9 * mask_9.astype(np.float64)) + (image_filtered_10 * mask_10.astype(np.float64))
+    rebuilding_image = (image_filtered_1 * mask_1.astype(np.float64)) + (image_filtered_2 * mask_2.astype(
+    np.float64)) + (image_filtered_3 * mask_3.astype(np.float64)) + (image_filtered_4 * mask_4.astype(
+    np.float64)) + (image_filtered_5 * mask_5.astype(np.float64)) + (image_filtered_6 * mask_6.astype(np.float64))
 
+                       # + (image_filtered_7 * mask_7.astype(np.float64)) + (image_filtered_8
+                       #  * mask_8.astype(np.float64)) + (image_filtered_9 * mask_9.astype(np.float64)) + (image_filtered_10 * mask_10.astype(np.float64))
+
+    mask_fin = mask_1.astype(np.float64) + mask_2.astype(np.float64) + mask_3.astype(np.float64) + mask_4.astype(
+    np.float64) + mask_5.astype(np.float64) + mask_6.astype(np.float64)
+               #+ mask_7.astype(np.float64) + mask_8.astype(np.float64) + mask_9 .astype(np.float64)+ mask_10.astype(np.float64)
 
 
     cv2.imshow("Original image", image)
-    cv2.imshow("Filter frequency response", 255 * mask_2)
-    cv2.imshow("Filtered image", image_filtered_2)
-    cv2.imshow("STD image", 255*(Mask_image_filtered_2_STD.astype(np.uint8)))
+    cv2.imshow("Filter frequency response", 255 * mask_6)
+    cv2.imshow("Filtered image", image_filtered_6)
+    cv2.imshow("STD image", 255*(Mask_image_filtered_6_STD.astype(np.uint8)))
     cv2.imshow("Rebuilding image", rebuilding_image)
+    #cv2.imshow("mask fin", 255 * (mask_fin.astype(np.uint8)))
+    cv2.imshow("mask fin", mask_fin/5)
     cv2.waitKey(0)
 
